@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-// Cria um objeto FirebaseOptions usando as informações do Firebase
-// que você obteve do console do Firebase
 const firebaseConfig = FirebaseOptions(
   apiKey: "AIzaSyAxshWzSUqafQ3awLfV97UsqoUYjaV_f2s",
   authDomain: "quadrinheitor.firebaseapp.com",
@@ -14,52 +12,82 @@ const firebaseConfig = FirebaseOptions(
 );
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Garante que os widgets estão inicializados
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: firebaseConfig,
-  ); // Inicializa o Firebase com as opções configuradas
-  runApp(const MyApp()); // Executa o aplicativo
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Quadrinhador',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(title: 'Quadrinhador'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _automaticFrames = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text('Quadrinheitor'),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'Seu aplicativo Firebase está pronto!',
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Nr de quadros'),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Informe o numero',
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: _automaticFrames,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _automaticFrames = value ?? false;
+                    });
+                  },
+                ),
+                Text('Quadros automáticos'),
+              ],
+            ),
+            SizedBox(height: 8),
+            Text('Texto'),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              height: 200,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+              ),
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  // Add your onPressed code here!
+                },
+                child: Text('Processar'),
+              ),
             ),
           ],
         ),
